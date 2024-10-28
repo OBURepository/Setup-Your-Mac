@@ -121,11 +121,11 @@ brandingIconDark="https://cdn-icons-png.flaticon.com/512/740/740878.png"
 supportTeamName="Support Team Name"
 supportTeamPhone="+1 (801) 555-1212"
 supportTeamEmail="support@domain.com"
-supportTeamChat="chat.support.domain.com"
+supportTeamChat=""
 supportTeamChatHyperlink="[${supportTeamChat}](https://${supportTeamChat})"
 supportTeamWebsite="support.domain.com"
 supportTeamHyperlink="[${supportTeamWebsite}](https://${supportTeamWebsite})"
-supportKB="KB8675309"
+supportKB=""
 supportTeamErrorKB="[${supportKB}](https://servicenow.company.com/support?id=kb_article_view&sysparm_article=${supportKB}#Failures)"
 supportTeamHours="Monday through Friday, 8 a.m. to 5 p.m."
 
@@ -3144,31 +3144,38 @@ elif [[ "${welcomeDialog}" == "userInput" ]]; then
                 welcomeDialog "Set Computer Name …"
                 currentComputerName=$( scutil --get ComputerName )
                 currentLocalHostName=$( scutil --get LocalHostName )
+                currentHostName=$( scutil --get HostName )
 
                 # Sets LocalHostName to a maximum of 15 characters, comprised of first eight characters of the computer's
                 # serial number and the last six characters of the client's MAC address
-                firstEightSerialNumber=$( system_profiler SPHardwareDataType | awk '/Serial\ Number\ \(system\)/ {print $NF}' | cut -c 1-8 )
-                lastSixMAC=$( ifconfig en0 | awk '/ether/ {print $2}' | sed 's/://g' | cut -c 7-12 )
-                newLocalHostName=${firstEightSerialNumber}-${lastSixMAC}
+                # firstEightSerialNumber=$( system_profiler SPHardwareDataType | awk '/Serial\ Number\ \(system\)/ {print $NF}' | cut -c 1-8 )
+                # lastSixMAC=$( ifconfig en0 | awk '/ether/ {print $2}' | sed 's/://g' | cut -c 7-12 )
+                # newLocalHostName=${firstEightSerialNumber}-${lastSixMAC}
 
                 if [[ "${debugMode}" == "true" ]] || [[ "${debugMode}" == "verbose" ]] ; then
 
                     welcomeDialog "DEBUG MODE: Would have renamed computer from: \"${currentComputerName}\" to \"${computerName}\" "
-                    welcomeDialog "DEBUG MODE: Would have renamed LocalHostName from: \"${currentLocalHostName}\" to \"${newLocalHostName}\" "
+                    welcomeDialog "DEBUG MODE: Would have renamed LocalHostName from: \"${currentLocalHostName}\" to \"${computerName}\" "
+                    welcomeDialog "DEBUG MODE: Would have renamed HostName from: \"${currentHostName}\" to \"${computerName}\" "
+
 
                 else
 
                     # Set the Computer Name to the user-entered value
                     scutil --set ComputerName "${computerName}"
 
-                    # Set the LocalHostName to `newLocalHostName`
-                    scutil --set LocalHostName "${newLocalHostName}"
+                    # Set the LocalHostName to the user-entered value
+                    scutil --set LocalHostName "${computerName}"
+
+                    # Set the LocalHost to the user-entered value
+                    scutil --set HostName "${computerName}"
 
                     # Delay required to reflect change …
                     # … side-effect is a delay in the "Setup Your Mac" dialog appearing
                     sleep 5
                     welcomeDialog "Renamed computer from: \"${currentComputerName}\" to \"$( scutil --get ComputerName )\" "
                     welcomeDialog "Renamed LocalHostName from: \"${currentLocalHostName}\" to \"$( scutil --get LocalHostName )\" "
+                    welcomeDialog "Renamed HostName from: \"${currentHostName}\" to \"$( scutil --get HostName )\" "
 
                 fi
 
@@ -3177,6 +3184,7 @@ elif [[ "${welcomeDialog}" == "userInput" ]]; then
                 welcomeDialog "${loggedInUser} did NOT specify a new computer name"
                 welcomeDialog "• Current Computer Name: \"$( scutil --get ComputerName )\" "
                 welcomeDialog "• Current Local Host Name: \"$( scutil --get LocalHostName )\" "
+                welcomeDialog "• Current Host Name: \"$( scutil --get HostName )\" "
 
             fi
 
