@@ -122,11 +122,11 @@ supportTeamName="Support Team Name"
 supportTeamPhone="+1 (801) 555-1212"
 supportTeamEmail="support@domain.com"
 supportTeamChat=""
-supportTeamChatHyperlink="[${supportTeamChat}](https://${supportTeamChat})"
+supportTeamChatHyperlink=""
 supportTeamWebsite="support.domain.com"
 supportTeamHyperlink="[${supportTeamWebsite}](https://${supportTeamWebsite})"
 supportKB=""
-supportTeamErrorKB="[${supportKB}](https://servicenow.company.com/support?id=kb_article_view&sysparm_article=${supportKB}#Failures)"
+supportTeamErrorKB=""
 supportTeamHours="Monday through Friday, 8 a.m. to 5 p.m."
 
 # Disable the "Continue" button in the User Input "Welcome" dialog until Dynamic Download Estimates have complete [ true | false ] (thanks, @Eltord!)
